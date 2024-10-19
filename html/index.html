@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
 </head>
 
-<body>
+<body class="htmlBody">
     <div id="app1">
         <h1 class="title">After School Clubs</h1>
         <button v-if="cartEmpty" v-on:click="toggleCheckOutMenu" class="checkoutButton">
@@ -40,36 +40,51 @@
                 </div>
             </div>
         </div>
-        <div v-else class="checkoutpage">
-            <div v-for="cartitem of cartItems" class="itembox">
-                <h1 class="itemTitle">{{cartitem.subject}}</h1>
-                <div class="itemImgDetails">
-                    <figure>
-                        <img v-bind:src="cartitem.image">
-                    </figure>
-                    <div class="itemDetails">
-                        <p class="itemLocation">Location:</p>
-                        <p class="itemLocation">{{cartitem.location}}</p>
-                        <p class="itemPrice">Price:</p>
-                        <p class="itemPrice">{{cartitem.currency}}{{cartitem.price}}</p>
-                        <button @click="removeFromCart(cartitem.id)" class="itemButton">Remove from cart</button>
+        <div v-else class="checkoutPage">
+            <h1 id="cartTitle">Cart:</h1>
+            <div class="cartItemsHolder">
+                <div v-for="cartitem of cartItems" class="itembox">
+                    <h1 class="itemTitle">{{cartitem.subject}}</h1>
+                    <div class="itemImgDetails">
+                        <figure>
+                            <img v-bind:src="cartitem.image">
+                        </figure>
+                        <div class="itemDetails">
+                            <p class="itemLocation">Location:</p>
+                            <p class="itemLocation">{{cartitem.location}}</p>
+                            <p class="itemPrice">Price:</p>
+                            <p class="itemPrice">{{cartitem.currency}}{{cartitem.price}}</p>
+                            <button @click="removeFromCart(cartitem.id)" class="itemButton">Remove from cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="checkoutForm">
                 <div class="checkoutFormInput">
-                    <h1>Checkout</h1>
-                    <h2>First Name:</h2>
-                    <input>
-                    <h2>Last Name:</h2>
-                    <input>
+                    <h1>Checkout:</h1>
+                    <h2>Enter your details:</h2>
+                    <div class="nameInput">
+                        <h2>First Name:</h2>
+                        <input>
+                        <h2>Last Name:</h2>
+                        <input>
+                    </div>
                     <h2>Telephone:</h2>
                     <input>
                     <h2>Email</h2>
                     <input>
                 </div>
                 <div class="checkoutFormView">
-                    <p>Total cost: £{{fullprice}}</p>
+                    <div class="orderInfo">
+                        <h1>Order Information:</h1>
+                        <h2>Seats purchased:</h2>
+                        <p v-for="cartitem of cartItems"> - {{cartitem.subject}}</p>
+                        <p>Total cost: £{{fullprice}}</p>
+                    </div>
+                    <div class="personalInfo">
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -106,8 +121,17 @@
                         image: '../images/atom.png',
                     },
                 ],
+                order: {
+                    firstName: "",
+                    lastName: "",
+                    telephone: "",
+                    address: "",
+                    email: "",
+                    city: "",
+                    postcode: ""
+                },
                 checkOutMenu: false,
-                cart: [1,1,1],
+                cart: [1, 1, 1, 2, 2, 3],
             },
             methods: {
                 addToCart: function (id) {
@@ -160,7 +184,7 @@
                 fullprice: function () {
                     let fullprice = 0;
                     for (let index = 0; index < this.cartItems.length; index++) {
-                    fullprice = fullprice + parseInt(this.cartItems[index].price);
+                        fullprice = fullprice + parseInt(this.cartItems[index].price);
                     }
                     return fullprice;
                 }

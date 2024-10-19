@@ -1,6 +1,13 @@
+@font-face {
+    font-family: 'Amatic SC Bold';
+    src: url(../font/AmaticSC-Bold.ttf);
+}
+.htmlBody {
+    font-family: 'Amatic SC Bold';
+}
 .title {
     text-align: center;
-    font-size: 2em;
+    font-size: 40px;
     padding: 0;
 }
 .checkoutButton {
@@ -12,6 +19,20 @@
     border-color: beige;
     border-radius: 5px;
     
+}
+.mainMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px;
+    flex-wrap: wrap;
+}
+.cartItemsHolder {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px;
+    flex-wrap: wrap;
 }
 .itembox {
     display: flex;
@@ -58,26 +79,94 @@
     cursor: pointer;
 }
 
+#cartTitle {
+    text-align: center;
+    font-size: 45px;
+    padding: 0;
+    margin: 0px;
+}
+
 .checkoutForm {
     background-color: #888888;
     display: flex;
     flex-direction: row;
+    border: 10px;
+    border-radius: 20px;
+    height: 550px;
 }
 .checkoutForm h1 {
     padding: 5px;
     margin: auto;
     align-items: center;
 }
-.checkoutFormInput{
+
+.checkoutForm input {
+    height: 20px;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+}
+.checkoutFormInput {
     display: flex;
     flex-direction: column;
     padding: 10px;
     width: 50%;
+}
+.checkoutFormInput h1 {
+    padding: 0;
+    margin: 0 auto;
+    align-items: center;
+}
+.checkoutFormView{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 50%;
+}
+.nameInput {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
 }
 .checkoutFormView {
+    background-color: #b3b3b3;
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    width: 50%;
+    border: 10px;
+    border-radius: 20px;
+}
+
+.orderInfo{
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    margin: 10px;
     width: 50%;
+    height: 100%;
+    overflow-y:auto;
+    
 }
+
+.orderInfo h1,h2 {
+    margin: 5px;
+    align-items: center;
+}
+.orderInfo p {
+    margin: 5px;
+    font-size: 25px;
+}
+
+.personalInfo {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    width: 50%;
+    height: 100%;
+}
+
+
 
