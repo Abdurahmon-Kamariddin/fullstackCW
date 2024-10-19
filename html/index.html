@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/5.15.1/css/all.min.css">
+    <title>After School Club</title>
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app1">
+        <h1 class="title">After School Clubs</h1>
+        <button v-if="cartEmpty" v-on:click="toggleCheckOutMenu" class="checkoutButton">
+            {{cartItemCount}}
+            <i class="fa-solid fa-cart-shopping"></i>
+            Checkout
+        </button>
+        <button v-else class="checkoutButton" disabled>
+            {{cartItemCount}}
+            <i class="fa-solid fa-cart-shopping"></i>
+            Checkout
+        </button>
+        <div v-if="!checkOutMenu" class="mainMenu">
+            <div v-for="item of clubs" class="itembox">
+                <h1 class="itemTitle">{{item.subject}}</h1>
+                <div class="itemImgDetails">
+                    <figure>
+                        <img v-bind:src="item.image">
+                    </figure>
+                    <div class="itemDetails">
+                        <p class="itemLocation">Location:</p>
+                        <p class="itemLocation">{{item.location}}</p>
+                        <p class="itemPrice">Price:</p>
+                        <p class="itemPrice">{{item.currency}}{{item.price}}</p>
+                        <button @click="addToCart(item.id)" class="itemButton">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-else class="checkoutpage">
+            <div v-for="cartitem of cartItems" class="itembox">
+                <h1 class="itemTitle">{{cartitem.subject}}</h1>
+                <div class="itemImgDetails">
+                    <figure>
+                        <img v-bind:src="cartitem.image">
+                    </figure>
+                    <div class="itemDetails">
+                        <p class="itemLocation">Location:</p>
+                        <p class="itemLocation">{{cartitem.location}}</p>
+                        <p class="itemPrice">Price:</p>
+                        <p class="itemPrice">{{cartitem.currency}}{{cartitem.price}}</p>
+                        <button @click="removeFromCart(cartitem.id)" class="itemButton">Remove from cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="checkoutForm">
+                <div class="checkoutFormInput">
+                    <h1>Checkout</h1>
+                    <h2>First Name:</h2>
+                    <input>
+                    <h2>Last Name:</h2>
+                    <input>
+                    <h2>Telephone:</h2>
+                    <input>
+                    <h2>Email</h2>
+                    <input>
+                </div>
+                <div class="checkoutFormView">
+                    <p>Total cost: £{{fullprice}}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let app1 = new Vue({
+            el: '#app1',
+            data: {
+                clubs: [
+                    {
+                        id: 1,
+                        subject: 'Maths',
+                        location: 'Hendon Library',
+                        currency: '£',
+                        price: '50',
+                        image: '../images/calc.png',
+                    },
+                    {
+                        id: 2,
+                        subject: 'English',
+                        location: 'Brent Cross Nursery',
+                        currency: '£',
+                        price: '50',
+                        image: '../images/book.svg',
+                    },
+                    {
+                        id: 3,
+                        subject: 'Science',
+                        location: 'Golders Green High School',
+                        currency: '£',
+                        price: '50',
+                        image: '../images/atom.png',
+                    },
+                ],
+                checkOutMenu: false,
+                cart: [1,1,1],
+            },
+            methods: {
+                addToCart: function (id) {
+                    this.cart.push(id);
+                    console.log("added to cart");
+                },
+                toggleCheckOutMenu: function () {
+                    this.checkOutMenu = !this.checkOutMenu;
+                    console.log("toggled checkout menu");
+                },
+                removeFromCart: function (id) {
+                    for (let i = 0; i < this.cart.length; i++) {
+                        if (this.cart[i] === id) {
+                            this.cart.splice(i, 1);
+                        }
+                    }
+                    if (this.cart.length == 0) {
+                        this.toggleCheckOutMenu();
+                    }
+                    console.log(this.cart);
+                    console.log("removed from cart");
+                }
+            },
+            computed: {
+                cartItemCount: function () {
+                    if (this.cart.length > 0) {
+                        return this.cart.length;
+                    } else {
+                        return '';
+                    }
+                },
+                cartEmpty: function () {
+                    if (this.cart.length > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                cartItems: function () {
+                    let cartItems = [];
+                    for (let index = 0; index < this.clubs.length; index++) {
+                        for (let index2 = 0; index2 < this.cart.length; index2++) {
+                            if (this.clubs[index].id == this.cart[index2]) {
+                                cartItems.push(this.clubs[index]);
+                            }
+                        }
+                    }
+                    return cartItems;
+                },
+                fullprice: function () {
+                    let fullprice = 0;
+                    for (let index = 0; index < this.cartItems.length; index++) {
+                    fullprice = fullprice + parseInt(this.cartItems[index].price);
+                    }
+                    return fullprice;
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+.title {
+    text-align: center;
+    font-size: 2em;
+    padding: 0;
+}
+.checkoutButton {
+    margin: 10px;
+    padding: 10px;
+    background-color: #000000;
+    color: white;
+    border: 100px;
+    border-color: beige;
+    border-radius: 5px;
+    
+}
+.itembox {
+    display: flex;
+    flex-direction: column;
+    background-color: #3e3e3e21;
+    margin: 3%;
+    border-radius: 10px;
+    width: max-content;
+}
+
+.itembox h1 {
+    padding-top: 10px;
+    margin: auto;
+    align-items: center;
+}
+.itembox img {
+    width: 100px;
+    height: 100px;
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+}
+
+.itemImgDetails {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border: 0px;
+}
+
+.itemDetails {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 0px;
+}
+
+.itemDetails p {
+    margin: 5px;
+}
+
+.itemButton {
+    margin: 10px;
+    cursor: pointer;
+}
+
+.checkoutForm {
+    background-color: #888888;
+    display: flex;
+    flex-direction: row;
+}
+.checkoutForm h1 {
+    padding: 5px;
+    margin: auto;
+    align-items: center;
+}
+.checkoutFormInput{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 50%;
+}
+.checkoutFormView {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 50%;
+}
+
