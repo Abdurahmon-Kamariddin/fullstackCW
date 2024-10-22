@@ -18,11 +18,14 @@
             <i class="fa-solid fa-cart-shopping"></i>
             Checkout
         </button>
-        <button v-else class="checkoutButton" disabled>
-            {{cartItemCount}}
-            <i class="fa-solid fa-cart-shopping"></i>
-            Checkout
-        </button>
+        <div v-else class="checkOutButtonAndMessage">
+            <button class="checkoutButton" disabled>
+                {{cartItemCount}}
+                <i class="fa-solid fa-cart-shopping"></i>
+                Checkout
+            </button>
+            <p>Add items to cart in order to view checkout.</p>
+        </div>
         <div v-if="!checkOutMenu" class="mainMenu">
             <div v-for="item of clubs" class="itembox">
                 <h1 class="itemTitle">{{item.subject}}</h1>
@@ -35,7 +38,15 @@
                         <p class="itemLocation">{{item.location}}</p>
                         <p class="itemPrice">Price:</p>
                         <p class="itemPrice">{{item.currency}}{{item.price}}</p>
-                        <button @click="addToCart(item.id)" class="itemButton">Add to cart</button>
+                        <div class="addCartButtonAndMessage">
+                            <button @click="addToCart(item.id)" class="itemButton" v-if="canAddToCart(item)">Add to
+                                cart</button>
+                            <p v-if="item.availableSeats === seatCount(item.id)">Seats sold out!</p>
+                            <p v-else-if="item.availableSeats - seatCount(item.id)< 5">Only {{item.availableSeats -
+                                seatCount(item.id)}} seats left!</p>
+                            <p v-else>Buy now!</p>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -65,14 +76,19 @@
                     <h2>Enter your details:</h2>
                     <div class="nameInput">
                         <h2>First Name:</h2>
-                        <input>
+                        <input v-model.trim="order.firstName" type="text">
                         <h2>Last Name:</h2>
-                        <input>
+                        <input v-model.trim="order.lastName" type="text">
                     </div>
                     <h2>Telephone:</h2>
-                    <input>
+                    <input v-model.number="order.telephone" type="number">
                     <h2>Email</h2>
-                    <input>
+                    <input v-model="order.email" type="email">
+                    <h2>City:</h2>
+                    <input v-model="order.city">
+                    <h2>Postcode:</h2>
+                    <input v-model="order.postcode">
+                    <button class="finalCheckOutButton" @click="checkout">Checkout</button>
                 </div>
                 <div class="checkoutFormView">
                     <div class="orderInfo">
@@ -82,6 +98,17 @@
                         <p>Total cost: £{{fullprice}}</p>
                     </div>
                     <div class="personalInfo">
+                        <h1>Personal Information:</h1>
+                        <h2>Full Name:</h2>
+                        <p>{{order.firstName}} {{order.lastName}}</p>
+                        <h2>Telephone:</h2>
+                        <p>{{order.telephone}}</p>
+                        <h2>Email:</h2>
+                        <p>{{order.email}}</p>
+                        <h2>City:</h2>
+                        <p>{{order.city}}</p>
+                        <h2>Postcode:</h2>
+                        <p>{{order.postcode}}</p>
 
                     </div>
 
@@ -99,41 +126,73 @@
                     {
                         id: 1,
                         subject: 'Maths',
-                        location: 'Hendon Library',
+                        location: 'Hendon Central Library',
                         currency: '£',
-                        price: '50',
+                        price: '40',
                         image: '../images/calc.png',
+                        availableSeats: 10
                     },
                     {
                         id: 2,
                         subject: 'English',
                         location: 'Brent Cross Nursery',
                         currency: '£',
-                        price: '50',
+                        price: '60',
                         image: '../images/book.svg',
+                        availableSeats: 1
                     },
                     {
                         id: 3,
                         subject: 'Science',
                         location: 'Golders Green High School',
                         currency: '£',
-                        price: '50',
+                        price: '45',
                         image: '../images/atom.png',
+                        availableSeats: 15
                     },
+                    {
+                        id: 4,
+                        subject: 'Art',
+                        location: 'Hampstead Heath Centre',
+                        currency: '£',
+                        price: '30',
+                        image: '../images/paint.svg',
+                        availableSeats: 3
+                    },
+                    {
+                        id: 5,
+                        subject: 'Music',
+                        location: 'Finchley Music School',
+                        currency: '£',
+                        price: '50',
+                        image: '../images/music.svg',
+                        availableSeats: 10
+                    },
+                    {
+                        id: 6,
+                        subject: 'Drama',
+                        location: 'London Bridge Theatre',
+                        currency: '£',
+                        price: '35',
+                        image: '../images/drama.svg',
+                        availableSeats: 15
+                    }
                 ],
                 order: {
                     firstName: "",
                     lastName: "",
                     telephone: "",
-                    address: "",
                     email: "",
                     city: "",
                     postcode: ""
                 },
                 checkOutMenu: false,
-                cart: [1, 1, 1, 2, 2, 3],
+                cart: [1],
             },
             methods: {
+                canAddToCart: function (club) {
+                    return club.availableSeats > this.seatCount(club.id);
+                },
                 addToCart: function (id) {
                     this.cart.push(id);
                     console.log("added to cart");
@@ -143,17 +202,50 @@
                     console.log("toggled checkout menu");
                 },
                 removeFromCart: function (id) {
-                    for (let i = 0; i < this.cart.length; i++) {
-                        if (this.cart[i] === id) {
-                            this.cart.splice(i, 1);
-                        }
+                    const index = this.cart.indexOf(id);
+                    if (index > -1) {
+                        this.cart.splice(index, 1);
                     }
                     if (this.cart.length == 0) {
                         this.toggleCheckOutMenu();
                     }
-                    console.log(this.cart);
                     console.log("removed from cart");
+                },
+                seatCount: function (id) {
+                    let seatCount = 0;
+                    for (let index = 0; index < this.cart.length; index++) {
+                        if (this.cart[index] == id) {
+                            seatCount++;
+                        }
+                    }
+                    return seatCount;
+                },
+                checkout: function () {
+                    if (this.order.firstName == "" || this.order.lastName == "" || this.order.telephone == "" || this.order.email == "" || this.order.city == "" || this.order.postcode == "") {
+                        alert("Please fill in all fields.");
+                        return;
+                    } else {
+                        alert("Thank you for your purchase!");
+                        console.log("checkout");
+                        console.log(this.order.firstName);
+                        console.log(this.cartItems.length);
+                        console.log(this.fullprice);
+                        this.cart = [];
+                        this.order = {
+                            firstName: "",
+                            lastName: "",
+                            telephone: "",
+                            email: "",
+                            city: "",
+                            postcode: ""
+                        };
+                        for (int = 0; int < this.clubs.length; int++) {
+                            this.clubs[int].availableSeats = this.clubs[int].availableSeats - this.seatCount(this.clubs[int].id);
+                        }
+                        this.toggleCheckOutMenu();
+                    }
                 }
+
             },
             computed: {
                 cartItemCount: function () {
@@ -180,6 +272,15 @@
                         }
                     }
                     return cartItems;
+                },
+                uniqueCartItems: function () {
+                    let uniqueCartItems = [];
+                    for (let index = 0; index < this.cartItems.length; index++) {
+                        if (!uniqueCartItems.includes(this.cartItems[index])) {
+                            uniqueCartItems.push(this.cartItems[index]);
+                        }
+                    }
+                    return uniqueCartItems;
                 },
                 fullprice: function () {
                     let fullprice = 0;

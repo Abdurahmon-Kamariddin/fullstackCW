@@ -18,8 +18,20 @@
     border: 100px;
     border-color: beige;
     border-radius: 5px;
-    
 }
+
+.checkOutButtonAndMessage {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 0px;
+}
+
+.checkOutButtonAndMessage p {
+    margin: 10px;
+    font-size: 25px;
+}
+
 .mainMenu {
     display: flex;
     flex-direction: row;
@@ -40,7 +52,8 @@
     background-color: #3e3e3e21;
     margin: 3%;
     border-radius: 10px;
-    width: max-content;
+    max-width: 500px;
+    min-width: 500px
 }
 
 .itembox h1 {
@@ -77,6 +90,14 @@
 .itemButton {
     margin: 10px;
     cursor: pointer;
+}
+
+.addCartButtonAndMessage {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 0px;
 }
 
 #cartTitle {
@@ -167,6 +188,27 @@
     width: 50%;
     height: 100%;
 }
+ 
+.personalInfo h1,h2 {
+    margin: 5px;
+    align-items: center;
+}
+.personalInfo p {
+    margin: 5px;
+    font-size: 25px;
+}
 
+.finalCheckOutButton {
+    margin: 10px;
+    padding: 10px;
+    background-color: #707070;
+    color: white;
+    border-width: 3px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 20px;
+    border-style: solid;
+
+
+}
 
 
