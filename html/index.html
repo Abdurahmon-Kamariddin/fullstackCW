@@ -27,7 +27,7 @@
                 </button>
                 <p>Add items to cart in order to view checkout.</p>
             </div>
-            <input type="text" placeholder="Search clubs..." class="searchBar" v-show="!checkOutMenu">
+            <input type="text" placeholder="Search clubs..." class="searchBar" v-show="!checkOutMenu" v-model.trim="searchQuery">
         </div>
         <div v-show="!checkOutMenu" class="sortByOrderBy">
             <div class="sortBy">
@@ -44,10 +44,30 @@
             </div>
         </div>
         <div v-if="!checkOutMenu" class="mainMenu">
-            <div>   
-                
+            <div v-show="!searchIsEmpty">   
+                <div v-for="item of searchItems" class="itembox">
+                    <h1 class="itemTitle">{{item.subject}}</h1>
+                    <div class="itemImgDetails">
+                        <figure>
+                            <img v-bind:src="item.image">
+                        </figure>
+                        <div class="itemDetails">
+                            <p class="itemLocation">Location:</p>
+                            <p class="itemLocation">{{item.location}}</p>
+                            <p class="itemPrice">Price:</p>
+                            <p class="itemPrice">{{item.currency}}{{item.price}}</p>
+                            <div class="addCartButtonAndMessage">
+                                <button @click="addToCart(item.id)" class="itemButton" v-if="canAddToCart(item)">Add to
+                                    cart</button>
+                                <p v-if="item.availableSeats === seatCount(item.id)">Seats sold out!</p>
+                                <p v-else-if="item.availableSeats - seatCount(item.id) < 5">Only {{item.availableSeats - seatCount(item.id)}} seats left!</p>
+                                <p v-else>Buy now!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div v-for="item of allClubs" class="itembox">
+            <div v-show="searchIsEmpty" v-for="item of allClubs" class="itembox">
                 <h1 class="itemTitle">{{item.subject}}</h1>
                 <div class="itemImgDetails">
                     <figure>
@@ -215,6 +235,7 @@
                 orderBy: "",
                 checkOutMenu: false,
                 cart: [1,2,1,1],
+                searchQuery: ""
             },
             methods: {
                 canAddToCart: function (club) {
@@ -298,6 +319,22 @@
                 }
             },
             computed: {
+                searchIsEmpty: function () {
+                    if (this.searchQuery == "") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                searchItems: function () {
+                    let searchItems = [];
+                    for (let index = 0; index < this.clubs.length; index++) {
+                        if (this.clubs[index].subject.toLowerCase().includes(this.searchQuery.toLowerCase())) {
+                            searchItems.push(this.clubs[index]);
+                        }
+                    }
+                    return searchItems;
+                },
                 cartItemCount: function () {
                     if (this.cart.length > 0) {
                         return this.cart.length;
