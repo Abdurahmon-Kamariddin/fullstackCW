@@ -13,21 +13,41 @@
 <body class="htmlBody">
     <div id="app1">
         <h1 class="title">After School Clubs</h1>
-        <button v-if="cartEmpty" v-on:click="toggleCheckOutMenu" class="checkoutButton">
-            {{cartItemCount}}
-            <i class="fa-solid fa-cart-shopping"></i>
-            Checkout
-        </button>
-        <div v-else class="checkOutButtonAndMessage">
-            <button class="checkoutButton" disabled>
+        <div class="checkoutAndSearch">
+            <button v-if="cartEmpty" v-on:click="toggleCheckOutMenu" class="checkoutButton">
                 {{cartItemCount}}
                 <i class="fa-solid fa-cart-shopping"></i>
                 Checkout
             </button>
-            <p>Add items to cart in order to view checkout.</p>
+            <div v-else class="checkOutButtonAndMessage">
+                <button class="checkoutButton" disabled>
+                    {{cartItemCount}}
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Checkout
+                </button>
+                <p>Add items to cart in order to view checkout.</p>
+            </div>
+            <input type="text" placeholder="Search clubs..." class="searchBar" v-show="!checkOutMenu">
+        </div>
+        <div v-show="!checkOutMenu" class="sortByOrderBy">
+            <div class="sortBy">
+                <h1>Sort By:</h1>
+                <p @click="sortByTitle">⍺ Title</p>
+                <p @click="sortByPrice">£ Price</p>
+                <p @click="sortByLocation">🏔 Location</p>
+                <p @click="sortByAvailability">⇶ Availability</p>
+            </div>
+            <div class="orderBy">
+                <h1>Order By:</h1>
+                <p @click="orderByAscending">⇧ Ascending</p>
+                <p @click="orderByDescending">⇩ Descending</p>
+            </div>
         </div>
         <div v-if="!checkOutMenu" class="mainMenu">
-            <div v-for="item of clubs" class="itembox">
+            <div>   
+                
+            </div>
+            <div v-for="item of allClubs" class="itembox">
                 <h1 class="itemTitle">{{item.subject}}</h1>
                 <div class="itemImgDetails">
                     <figure>
@@ -42,17 +62,20 @@
                             <button @click="addToCart(item.id)" class="itemButton" v-if="canAddToCart(item)">Add to
                                 cart</button>
                             <p v-if="item.availableSeats === seatCount(item.id)">Seats sold out!</p>
-                            <p v-else-if="item.availableSeats - seatCount(item.id)< 5">Only {{item.availableSeats -
+                            <p v-else-if="item.availableSeats - seatCount(item.id) < 5">Only {{item.availableSeats -
                                 seatCount(item.id)}} seats left!</p>
                             <p v-else>Buy now!</p>
                         </div>
 
                     </div>
                 </div>
+
+
             </div>
         </div>
         <div v-else class="checkoutPage">
             <h1 id="cartTitle">Cart:</h1>
+
             <div class="cartItemsHolder">
                 <div v-for="cartitem of cartItems" class="itembox">
                     <h1 class="itemTitle">{{cartitem.subject}}</h1>
@@ -70,6 +93,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="checkoutForm">
                 <div class="checkoutFormInput">
                     <h1>Checkout:</h1>
@@ -186,8 +210,10 @@
                     city: "",
                     postcode: ""
                 },
+                sortBy: "",
+                orderBy: "",
                 checkOutMenu: false,
-                cart: [1],
+                cart: [],
             },
             methods: {
                 canAddToCart: function (club) {
@@ -244,8 +270,31 @@
                         }
                         this.toggleCheckOutMenu();
                     }
+                },
+                sortByTitle: function () {
+                    this.sortBy = "title";
+                    console.log("sorted by title");
+                },
+                sortByPrice: function () {
+                    this.sortBy = "price";
+                    console.log("sorted by price");
+                },
+                sortByLocation: function () {
+                    this.sortBy = "location";
+                    console.log("sorted by location");
+                },
+                sortByAvailability: function () {
+                    this.sortBy = "availability";
+                    console.log("sorted by availability");
+                },
+                orderByAscending: function () {
+                    this.orderBy = "ascending";
+                    console.log("ordered by ascending");
+                },
+                orderByDescending: function () {
+                    this.orderBy = "descending";
+                    console.log("ordered by descending");
                 }
-
             },
             computed: {
                 cartItemCount: function () {
@@ -288,6 +337,22 @@
                         fullprice = fullprice + parseInt(this.cartItems[index].price);
                     }
                     return fullprice;
+                },
+                allClubs: function () {
+                    let allClubs = this.clubs;
+                    if (this.sortBy == "title") {
+                        allClubs.sort((a, b) => a.subject.localeCompare(b.subject));
+                    } else if (this.sortBy == "price") {
+                        allClubs.sort((a, b) => a.price - b.price);
+                    } else if (this.sortBy == "location") {
+                        allClubs.sort((a, b) => a.location.localeCompare(b.location));
+                    } else if (this.sortBy == "availability") {
+                        allClubs.sort((a, b) => a.availableSeats - b.availableSeats);
+                    }
+                    if (this.orderBy == "ascending") {
+                        allClubs.reverse();
+                    }
+                    return allClubs;
                 }
 
             }

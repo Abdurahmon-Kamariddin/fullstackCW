@@ -2,14 +2,30 @@
     font-family: 'Amatic SC Bold';
     src: url(../font/AmaticSC-Bold.ttf);
 }
+
 .htmlBody {
     font-family: 'Amatic SC Bold';
 }
+
 .title {
     text-align: center;
     font-size: 40px;
     padding: 0;
 }
+
+.checkoutAndSearch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.searchBar {
+    height: 30px;
+    width: 40%;
+    border-radius: 25px;
+}
+
+
 .checkoutButton {
     margin: 10px;
     padding: 10px;
@@ -32,6 +48,41 @@
     font-size: 25px;
 }
 
+.sortByOrderBy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+}
+
+.sortBy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: 10px;
+}
+
+.sortBy p {
+    margin: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.orderBy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: 50px;
+}
+
+.orderBy p {
+    margin: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
 .mainMenu {
     display: flex;
     flex-direction: row;
@@ -39,6 +90,7 @@
     margin: 10px;
     flex-wrap: wrap;
 }
+
 .cartItemsHolder {
     display: flex;
     flex-direction: row;
@@ -46,6 +98,7 @@
     margin: 10px;
     flex-wrap: wrap;
 }
+
 .itembox {
     display: flex;
     flex-direction: column;
@@ -61,6 +114,7 @@
     margin: auto;
     align-items: center;
 }
+
 .itembox img {
     width: 100px;
     height: 100px;
@@ -115,6 +169,7 @@
     border-radius: 20px;
     height: 550px;
 }
+
 .checkoutForm h1 {
     padding: 5px;
     margin: auto;
@@ -127,23 +182,27 @@
     margin: 5px;
     border-radius: 5px;
 }
+
 .checkoutFormInput {
     display: flex;
     flex-direction: column;
     padding: 10px;
     width: 50%;
 }
+
 .checkoutFormInput h1 {
     padding: 0;
     margin: 0 auto;
     align-items: center;
 }
-.checkoutFormView{
+
+.checkoutFormView {
     display: flex;
     flex-direction: column;
     padding: 10px;
     width: 50%;
 }
+
 .nameInput {
     display: flex;
     flex-direction: row;
@@ -152,6 +211,7 @@
     width: 100%;
 
 }
+
 .checkoutFormView {
     background-color: #b3b3b3;
     display: flex;
@@ -162,20 +222,22 @@
     border-radius: 20px;
 }
 
-.orderInfo{
+.orderInfo {
     display: flex;
     flex-direction: column;
     margin: 10px;
     width: 50%;
     height: 100%;
-    overflow-y:auto;
-    
+    overflow-y: auto;
+
 }
 
-.orderInfo h1,h2 {
+.orderInfo h1,
+h2 {
     margin: 5px;
     align-items: center;
 }
+
 .orderInfo p {
     margin: 5px;
     font-size: 25px;
@@ -188,11 +250,13 @@
     width: 50%;
     height: 100%;
 }
- 
-.personalInfo h1,h2 {
+
+.personalInfo h1,
+h2 {
     margin: 5px;
     align-items: center;
 }
+
 .personalInfo p {
     margin: 5px;
     font-size: 25px;
@@ -210,5 +274,4 @@
 
 
 }
-
 
