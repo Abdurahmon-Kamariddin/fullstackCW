@@ -68,7 +68,7 @@ let app1 = new Vue({
         sortBy: "",
         orderBy: "",
         checkOutMenu: false,
-        cart: [1,2,1,1],
+        cart: [],
         searchQuery: ""
     },
     methods: {
