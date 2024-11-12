@@ -8,7 +8,7 @@ let app1 = new Vue({
                 location: 'Hendon Central Library',
                 currency: '£',
                 price: '40',
-                image: '../images/calc.png',
+                image: 'images/calc.png',
                 availableSeats: 10
             },
             {
@@ -17,7 +17,7 @@ let app1 = new Vue({
                 location: 'Brent Cross Nursery',
                 currency: '£',
                 price: '60',
-                image: '../images/book.svg',
+                image: 'images/book.svg',
                 availableSeats: 1
             },
             {
@@ -26,7 +26,7 @@ let app1 = new Vue({
                 location: 'Golders Green High School',
                 currency: '£',
                 price: '45',
-                image: '../images/atom.png',
+                image: 'images/atom.png',
                 availableSeats: 15
             },
             {
@@ -35,7 +35,7 @@ let app1 = new Vue({
                 location: 'Hampstead Heath Centre',
                 currency: '£',
                 price: '30',
-                image: '../images/paint.svg',
+                image: 'images/paint.svg',
                 availableSeats: 3
             },
             {
@@ -44,7 +44,7 @@ let app1 = new Vue({
                 location: 'Finchley Music School',
                 currency: '£',
                 price: '50',
-                image: '../images/music.svg',
+                image: 'images/music.svg',
                 availableSeats: 10
             },
             {
@@ -53,7 +53,7 @@ let app1 = new Vue({
                 location: 'London Bridge Theatre',
                 currency: '£',
                 price: '35',
-                image: '../images/drama.svg',
+                image: 'images/drama.svg',
                 availableSeats: 15
             }
         ],
