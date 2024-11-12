@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Amatic SC Bold';
-    src: url(../font/AmaticSC-Bold.ttf);
+    src: url('font/AmaticSC-Bold.ttf');
 }
 
 .htmlBody {
