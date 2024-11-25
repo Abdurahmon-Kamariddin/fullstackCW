@@ -332,10 +332,18 @@
                                 "Content-Type": "application/json",
                             },
                         });
+
+                        if (!res.ok) {
+                            // If the response status is not OK (not 2xx)
+                            throw new Error(`HTTP error! status: ${res.status}`);
+                        }
+
                         var data = await res.json();
                         allClubs = data;
+
                     } catch (error) {
-                        console.log(error);
+                        console.log("Error fetching clubs:", error);
+                        return []; // Return empty array in case of error
                     }
                     if (this.sortBy == "title") {
                         allClubs.sort((a, b) => a.subject.localeCompare(b.subject));
