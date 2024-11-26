@@ -284,7 +284,9 @@
                                         headers: {
                                             "Content-Type": "application/json"
                                         },
-                                        body: userData.cart
+                                        body: JSON.stringify({
+                                            cart: this.cart
+                                        })
                                     });
                                     const result = await response.json();
                                     console.log(result);
