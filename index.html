@@ -317,6 +317,18 @@
                         }
                     }
                 },
+                sortClubs: function() {
+                    if (this.sortBy == "title") {
+                        this.clubs.sort((a, b) => a.subject.localeCompare(b.subject));
+                    } else if (this.sortBy == "price") {
+                        this.clubs.sort((a, b) => a.price - b.price);
+                    } else if (this.sortBy == "availability") {
+                        this.clubs.sort((a, b) => a.availableSeats - b.availableSeats);
+                    }
+                    if (this.orderBy == "descending") {
+                        this.clubs.reverse();
+                    }
+                },
                 sortByTitle: function () {
                     this.sortBy = "title";
                     sortClubs();
@@ -341,19 +353,7 @@
                     this.orderBy = "descending";
                     sortClubs();
                     console.log("ordered by descending");
-                }, 
-                sortClubs: function() {
-                    if (this.sortBy == "title") {
-                        this.clubs.sort((a, b) => a.subject.localeCompare(b.subject));
-                    } else if (this.sortBy == "price") {
-                        this.clubs.sort((a, b) => a.price - b.price);
-                    } else if (this.sortBy == "availability") {
-                        this.clubs.sort((a, b) => a.availableSeats - b.availableSeats);
-                    }
-                    if (this.orderBy == "descending") {
-                        this.clubs.reverse();
-                    }
-                }
+                } 
             },
             computed: {
                 searchIsEmpty: function () {
