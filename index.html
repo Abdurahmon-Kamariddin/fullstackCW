@@ -319,23 +319,40 @@
                 },
                 sortByTitle: function () {
                     this.sortBy = "title";
+                    sortClubs();
                     console.log("sorted by title");
                 },
                 sortByPrice: function () {
                     this.sortBy = "price";
+                    sortClubs();
                     console.log("sorted by price");
                 },
                 sortByAvailability: function () {
                     this.sortBy = "availability";
+                    sortClubs();
                     console.log("sorted by availability");
                 },
                 orderByAscending: function () {
                     this.orderBy = "ascending";
+                    sortClubs();
                     console.log("ordered by ascending");
                 },
                 orderByDescending: function () {
                     this.orderBy = "descending";
+                    sortClubs();
                     console.log("ordered by descending");
+                }, 
+                sortClubs: function() {
+                    if (this.sortBy == "title") {
+                        this.clubs.sort((a, b) => a.subject.localeCompare(b.subject));
+                    } else if (this.sortBy == "price") {
+                        this.clubs.sort((a, b) => a.price - b.price);
+                    } else if (this.sortBy == "availability") {
+                        this.clubs.sort((a, b) => a.availableSeats - b.availableSeats);
+                    }
+                    if (this.orderBy == "descending") {
+                        this.clubs.reverse();
+                    }
                 }
             },
             computed: {
