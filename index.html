@@ -35,7 +35,6 @@
                 <h1>Sort By:</h1>
                 <p @click="sortByTitle">⍺ Title</p>
                 <p @click="sortByPrice">£ Price</p>
-                <p @click="sortByLocation">🏔 Location</p>
                 <p @click="sortByAvailability">⇶ Availability</p>
             </div>
             <div class="orderBy">
@@ -209,15 +208,13 @@
                         allClubs.sort((a, b) => a.subject.localeCompare(b.subject));
                     } else if (this.sortBy == "price") {
                         allClubs.sort((a, b) => a.price - b.price);
-                    } else if (this.sortBy == "location") {
-                        allClubs.sort((a, b) => a.location.localeCompare(b.location));
                     } else if (this.sortBy == "availability") {
                         allClubs.sort((a, b) => a.availableSeats - b.availableSeats);
                     }
                     if (this.orderBy == "descending") {
                         allClubs.reverse();
                     }
-                    return allClubs;
+                    this.clubs = allClubs;
                 },
                 canAddToCart: function (club) {
                     return club.availableSeats > this.seatCount(club.id);
@@ -302,7 +299,7 @@
                                             city: "",
                                             postcode: ""
                                         };
-                                        this.clubs = this.fetchAllClubs; //set the clubs availability to the updated availability
+                                        this.fetchAllClubs; //set the clubs availability to the updated availability
                                         this.toggleCheckOutMenu();
                                     } else {
                                         console.log("Club availabilities update failed, please try again.");
@@ -325,10 +322,6 @@
                 sortByPrice: function () {
                     this.sortBy = "price";
                     console.log("sorted by price");
-                },
-                sortByLocation: function () {
-                    this.sortBy = "location";
-                    console.log("sorted by location");
                 },
                 sortByAvailability: function () {
                     this.sortBy = "availability";
@@ -403,7 +396,7 @@
                 }
             },
             created() {
-                this.clubs = this.fetchAllClubs;
+                this.fetchAllClubs;
             }
         });
     </script>
