@@ -299,7 +299,7 @@
                                             city: "",
                                             postcode: ""
                                         };
-                                        this.fetchAllClubs; //set the clubs availability to the updated availability
+                                        this.fetchAllClubs(); //set the clubs availability to the updated availability
                                         this.toggleCheckOutMenu();
                                     } else {
                                         console.log("Club availabilities update failed, please try again.");
@@ -396,7 +396,7 @@
                 }
             },
             created() {
-                this.fetchAllClubs;
+                this.fetchAllClubs();
             }
         });
     </script>
