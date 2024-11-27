@@ -45,7 +45,7 @@
         </div>
         <div v-if="!checkOutMenu" class="mainMenu">
             <div v-show="!searchIsEmpty">
-                <div v-for="item of searchItems" class="itembox">
+                <div v-for="item of searchedClubs" class="itembox">
                     <h1 class="itemTitle">{{item.subject}}</h1>
                     <div class="itemImgDetails">
                         <figure>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
             </div>
-            <div v-show="searchIsEmpty" v-for="item of searchedClubs" class="itembox">
+            <div v-show="searchIsEmpty" v-for="item of clubs" class="itembox">
                 <h1 class="itemTitle">{{item.subject}}</h1>
                 <div class="itemImgDetails">
                     <figure>
@@ -256,6 +256,10 @@
                     var userData = {
                         searchQuery: this.searchQuery
                     };
+                    if (this.searchQuery == "") {
+                        this.searchedClubs = [];
+                        return;
+                    }
                     try {
                         const response = await fetch("https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/search", {
                             method: "POST",
@@ -406,15 +410,6 @@
                     } else {
                         return false;
                     }
-                },
-                searchItems: function () {
-                    let searchItems = [];
-                    for (let index = 0; index < this.clubs.length; index++) {
-                        if (this.clubs[index].subject.toLowerCase().includes(this.searchQuery.toLowerCase())) {
-                            searchItems.push(this.clubs[index]);
-                        }
-                    }
-                    return searchItems;
                 },
                 cartItemCount: function () {
                     if (this.cart.length > 0) {
