@@ -49,7 +49,8 @@
                     <h1 class="itemTitle">{{item.subject}}</h1>
                     <div class="itemImgDetails">
                         <figure>
-                            <img v-bind:src="'https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/images/' + item.image">
+                            <img
+                                v-bind:src="'https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/images/' + item.image">
                         </figure>
                         <div class="itemDetails">
                             <p class="itemLocation">Location:</p>
@@ -59,6 +60,7 @@
                             <div class="addCartButtonAndMessage">
                                 <button @click="addToCart(item.id)" class="itemButton" v-if="canAddToCart(item)">Add to
                                     cart</button>
+                                <button v-if="item.availableSeats === seatCount(item.id)" disabled>Add to cart</button>
                                 <p v-if="item.availableSeats === seatCount(item.id)">Seats sold out!</p>
                                 <p v-else-if="item.availableSeats - seatCount(item.id) < 5">Only {{item.availableSeats -
                                     seatCount(item.id)}} seats left!</p>
@@ -72,7 +74,8 @@
                 <h1 class="itemTitle">{{item.subject}}</h1>
                 <div class="itemImgDetails">
                     <figure>
-                        <img v-bind:src="'https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/images/' + item.image">
+                        <img
+                            v-bind:src="'https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/images/' + item.image">
                     </figure>
                     <div class="itemDetails">
                         <p class="itemLocation">Location:</p>
@@ -82,6 +85,7 @@
                         <div class="addCartButtonAndMessage">
                             <button @click="addToCart(item.id)" class="itemButton" v-if="canAddToCart(item)">Add to
                                 cart</button>
+                            <button v-if="item.availableSeats === seatCount(item.id)" disabled>Add to cart</button>
                             <p v-if="item.availableSeats === seatCount(item.id)">Seats sold out!</p>
                             <p v-else-if="item.availableSeats - seatCount(item.id) < 5">Only {{item.availableSeats -
                                 seatCount(item.id)}} seats left!</p>
@@ -102,7 +106,8 @@
                     <h1 class="itemTitle">{{cartitem.subject}}</h1>
                     <div class="itemImgDetails">
                         <figure>
-                            <img v-bind:src= "'https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/images/' + cartitem.image">
+                            <img
+                                v-bind:src="'https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/images/' + cartitem.image">
                         </figure>
                         <div class="itemDetails">
                             <p class="itemLocation">Location:</p>
@@ -317,7 +322,7 @@
                         }
                     }
                 },
-                sortClubs: function() {
+                sortClubs: function () {
                     if (this.sortBy == "title") {
                         this.clubs.sort((a, b) => a.subject.localeCompare(b.subject));
                     } else if (this.sortBy == "price") {
@@ -353,7 +358,7 @@
                     this.orderBy = "descending";
                     this.sortClubs();
                     console.log("ordered by descending");
-                } 
+                }
             },
             computed: {
                 searchIsEmpty: function () {
