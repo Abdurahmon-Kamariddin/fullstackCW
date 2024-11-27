@@ -132,9 +132,9 @@
                         <input v-model.trim="order.lastName" type="text">
                     </div>
                     <h2>Telephone:</h2>
-                    <input v-model.number="order.telephone" type="tel">
+                    <input v-model.number="order.telephone" type="text">
                     <h2>Email</h2>
-                    <input v-model="order.email" type="email">
+                    <input v-model="order.email" type="text">
                     <h2>City:</h2>
                     <input v-model="order.city">
                     <h2>Postcode:</h2>
@@ -252,8 +252,25 @@
                     return seatCount;
                 },
                 checkout: async function () {
+                    const numberRegex = /^[0-9]*$/;
+                    const emailRegex = /\S+@\S+\.\S+/;
                     if (this.order.firstName == "" || this.order.lastName == "" || this.order.telephone == "" || this.order.email == "" || this.order.city == "" || this.order.postcode == "") {
                         alert("Please fill in all fields.");
+                        return;
+                    } else if (this.order.firstName.length < 3 || this.order.lastName.length < 3) {
+                        alert("Please enter a valid name.");
+                        return;
+                    } else if ( numberRegex.test(this.order.telephone) == false || this.order.telephone.length < 10) {
+                        alert("Please enter a valid telephone number.");
+                        return;
+                    } else if ( emailRegex.test(this.order.email) == false) {
+                        alert("Please enter a valid email address.");
+                        return;
+                    } else if (this.order.city.length < 3) {
+                        alert("Please enter a valid city.");
+                        return;
+                    } else if (this.order.postcode.length < 5) {
+                        alert("Please enter a valid postcode.");
                         return;
                     } else {
                         alert("Thank you for your purchase!");
