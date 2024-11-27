@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>After School Club</title>
     <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
 </head>
@@ -132,7 +132,7 @@
                         <input v-model.trim="order.lastName" type="text">
                     </div>
                     <h2>Telephone:</h2>
-                    <input v-model.number="order.telephone" type="number">
+                    <input v-model.number="order.telephone" type="tel">
                     <h2>Email</h2>
                     <input v-model="order.email" type="email">
                     <h2>City:</h2>
@@ -257,10 +257,7 @@
                         return;
                     } else {
                         alert("Thank you for your purchase!");
-                        console.log("checkout");
-                        console.log(this.order.firstName);
-                        console.log(this.cartItems.length);
-                        console.log(this.fullprice);
+                        console.log("checkout initiated");
                         var userOrder = {
                             firstName: this.order.firstName,
                             lastName: this.order.lastName,
