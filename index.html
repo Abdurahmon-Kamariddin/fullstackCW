@@ -4,33 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- my css stylesheet link -->
+    <link rel="stylesheet" type="text/css" href="styles.css" /> 
+    <!-- fontawesome link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
     <title>After School Club</title>
-    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script> 
 </head>
 
 <body class="htmlBody">
     <div id="app1">
         <h1 class="title">After School Clubs</h1>
         <div class="checkoutAndSearch">
-            <button v-if="cartEmpty" v-on:click="toggleCheckOutMenu" class="checkoutButton">
+            <!-- checkout button that works when there is stuff in the cart -->
+            <button v-if="cartEmpty" v-on:click="toggleCheckOutMenu" class="checkoutButton"> 
                 {{cartItemCount}}
                 <i class="fa-solid fa-cart-shopping"></i>
                 Checkout
             </button>
             <div v-else class="checkOutButtonAndMessage">
-                <button class="checkoutButton" disabled>
+                <!-- checkout button that is disabled when there is nothing in the cart -->
+                <button class="checkoutButton" disabled> 
                     {{cartItemCount}}
                     <i class="fa-solid fa-cart-shopping"></i>
                     Checkout
                 </button>
                 <p>Add items to cart in order to view checkout.</p>
             </div>
+            <!-- search bar that filters the clubs based on the subject name (search as you type with @input) -->
             <input type="text" placeholder="Search clubs..." class="searchBar" v-show="!checkOutMenu"
-                v-model.trim="searchQuery" @input="search()">
+                v-model.trim="searchQuery" @input="search()"> 
         </div>
-        <div v-show="!checkOutMenu" class="sortByOrderBy">
+        <!-- sort and order options -->
+        <div v-show="!checkOutMenu" class="sortByOrderBy"> 
             <div class="sortBy">
                 <h1>Sort By:</h1>
                 <p @click="sortByTitle">⍺ Title</p>
@@ -42,14 +48,17 @@
                 <p @click="orderByAscending">⇧ Ascending</p>
                 <p @click="orderByDescending">⇩ Descending</p>
             </div>
+            <p>Sorted by {{this.sortBy}} in {{this.orderBy}} order </p>
         </div>
         <div v-if="!checkOutMenu" class="mainMenu">
+            <!-- should there be any input into the search bar, we search against the collection and display those clubs (should they exist) in this section  -->
             <div v-show="!searchIsEmpty">
                 <div v-for="item of searchedClubs" class="itembox">
                     <h1 class="itemTitle">{{item.subject}}</h1>
                     <div class="itemImgDetails">
                         <figure>
-                            <img
+                            <!-- Images served statically through the images folder in directory that holds our app.js which is hosted via aws  -->
+                            <img            
                                 v-bind:src="'https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/images/' + item.image">
                         </figure>
                         <div class="itemDetails">
@@ -58,8 +67,10 @@
                             <p class="itemPrice">Price:</p>
                             <p class="itemPrice">{{item.currency}}{{item.price}}</p>
                             <div class="addCartButtonAndMessage">
+                                <!-- if theres still space in the club we can still press the button -->
                                 <button @click="addToCart(item.id)" class="itemButton" v-if="canAddToCart(item)">Add to
                                     cart</button>
+                                    <!-- if there isn't any more space then the button is still visible however is disavled -->
                                 <button v-if="item.availableSeats === seatCount(item.id)" disabled>Add to cart</button>
                                 <p v-if="item.availableSeats === seatCount(item.id)">Seats sold out!</p>
                                 <p v-else-if="item.availableSeats - seatCount(item.id) < 5">Only {{item.availableSeats -
@@ -70,6 +81,7 @@
                     </div>
                 </div>
             </div>
+            <!-- This is our main page full of all clubs being rendered here -->
             <div v-show="searchIsEmpty" v-for="item of clubs" class="itembox">
                 <h1 class="itemTitle">{{item.subject}}</h1>
                 <div class="itemImgDetails">
@@ -98,6 +110,7 @@
 
             </div>
         </div>
+        <!-- Checkout page that shows the users cart and holds the form where the user can checkout -->
         <div v-else class="checkoutPage">
             <h1 id="cartTitle">Cart:</h1>
 
@@ -173,6 +186,7 @@
         let app1 = new Vue({
             el: '#app1',
             data: {
+                // all clubs and searched clubs are stored in these arrays, updated when necessary by get functions /clubs and /search
                 clubs: [],
                 searchedClubs: [],
                 order: {
@@ -182,15 +196,15 @@
                     email: "",
                     city: "",
                     postcode: ""
-                },
-                sortBy: "title", //defualt sorting
-                orderBy: "ascending", //default order
+                }, //order object that holds the users order details that we will send to the server to indert into the database
+                sortBy: "Title", //defualt sorting
+                orderBy: "Ascending", //default order
                 checkOutMenu: false,
-                cart: [],
-                searchQuery: ""
+                cart: [], //our cart that holds the ids of the clubs that the user wants to purchase
+                searchQuery: "" //search query that is used to search against the clubs
             },
             methods: {
-                fetchAllClubs: async function () {
+                fetchAllClubs: async function () { // fetching all clubs in the database
                     try {
                         var allClubs = [];
                         var res = await fetch("https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/clubs", {
@@ -200,7 +214,7 @@
                             },
                         });
                         if (!res.ok) {
-                            // If the response status is not OK (200), log the error
+                            // if the response status is not OK (200), log the error
                             throw new Error(`HTTP error! status: ${res.status}`);
                         }
                         var data = await res.json();
@@ -208,16 +222,16 @@
                         this.clubs = allClubs;
                     } catch (error) {
                         console.log("Error fetching clubs:", error);
-                        return []; // Return empty array in case of error
+                        return []; // return empty array in case of error
                     }
-                    if (this.sortBy == "title") {
+                    if (this.sortBy == "Title") {
                         allClubs.sort((a, b) => a.subject.localeCompare(b.subject));
-                    } else if (this.sortBy == "price") {
+                    } else if (this.sortBy == " Price") {
                         allClubs.sort((a, b) => a.price - b.price);
-                    } else if (this.sortBy == "availability") {
+                    } else if (this.sortBy == "Availability") {
                         allClubs.sort((a, b) => a.availableSeats - b.availableSeats);
                     }
-                    if (this.orderBy == "descending") {
+                    if (this.orderBy == "Descending") {
                         allClubs.reverse();
                     }
                     this.clubs = allClubs;
@@ -253,12 +267,12 @@
                     return seatCount;
                 },
                 search: async function () {
-                    if (this.searchQuery == "") {
+                    if (this.searchQuery == "") { //if the search query is empty, we empty the searchedClubs array which in turn would clear the search results screen and return to all clubs 
                         this.searchedClubs = [];
                         return;
                     }
                     try {
-                        const response = await fetch(`https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/search?searchQuery=${encodeURIComponent(this.searchQuery)}`, {
+                        const response = await fetch(`https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/search?searchQuery=${encodeURIComponent(this.searchQuery)}`, { //encodeURI included to be sure that special characters are encoded properly if they should be searched 
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json"
@@ -266,10 +280,10 @@
                         });
                         const result = await response.json();
                         console.log(result);
-                        if (response.status == 200) {
+                        if (response.status == 200) { //if the search was successful, we update the searchedClubs array with the search results
                             this.searchedClubs = result;
                         } else {
-                            console.log("Search failed, please try again.");
+                            console.log("Search failed, please try again."); //other wise we log an error (whether it be a 404, no results found, or 500, server error)
                         }
                     } catch (error) {
                         console.log(error);
@@ -277,8 +291,8 @@
 
                 },
                 checkout: async function () {
-                    const numberRegex = /^[0-9]*$/;
-                    const emailRegex = /\S+@\S+\.\S+/;
+                    const numberRegex = /^[0-9]*$/; //a number regular expression which checks that the telephone number is indeed a number
+                    const emailRegex = /\S+@\S+\.\S+/; //an email regular expression which checks that the email is in the correct format (charactershere@charactershere.fullstopandchars)
                     if (this.order.firstName == "" || this.order.lastName == "" || this.order.telephone == "" || this.order.email == "" || this.order.city == "" || this.order.postcode == "") {
                         alert("Please fill in all fields.");
                         return;
@@ -297,7 +311,7 @@
                     } else if (this.order.postcode.length < 5) {
                         alert("Please enter a valid postcode.");
                         return;
-                    } else {
+                    } else { //only when all fields are filled in and valid, we can proceed with the checkout
                         alert("Thank you for your purchase!");
                         console.log("checkout initiated");
                         var userOrder = {
@@ -308,7 +322,7 @@
                             city: this.order.city,
                             postcode: this.order.postcode,
                             cart: this.cart
-                        };
+                        }; //we collate the order details and the cart into a single object and stringify it to send to the server
                         const userData = JSON.stringify(userOrder);
                         try {
                             const response = await fetch("https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/saveOrder", {
@@ -316,25 +330,25 @@
                                 headers: {
                                     "Content-Type": "application/json"
                                 },
-                                body: userData
+                                body: userData //sent in the body of the post request
                             });
                             const result = await response.json();
                             console.log(result);
-                            if (response.status == 200) {
+                            if (response.status == 200) { //only if the details were correctly saved into the orders collection in the database, we can proceed to update the availability of the clubs
                                 alert("Order submitted successfully");
                                 try {
-                                    const response = await fetch("https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/updateAvailability", {
+                                    const response = await fetch("https://fullstackcw-env.eba-u9jzwuup.eu-west-1.elasticbeanstalk.com/updateAvailability", { // we send the cart of clubs to the server to update the availability of the relevant clubs
                                         method: "PUT",
                                         headers: {
                                             "Content-Type": "application/json"
                                         },
-                                        body: JSON.stringify({
+                                        body: JSON.stringify({ //the cart is sent in the body of the put request
                                             cart: this.cart
                                         })
                                     });
                                     const result = await response.json();
                                     console.log(result);
-                                    if (response.status == 200) {
+                                    if (response.status == 200) { //only when the availability of the clubs has been updated successfully, we can clear the cart and order details and return to the main menu for next user
                                         console.log("Club availabilities updated successfully");
                                         this.cart = [];
                                         this.searchQuery = "";
@@ -347,7 +361,7 @@
                                             city: "",
                                             postcode: ""
                                         };
-                                        this.fetchAllClubs(); //set the clubs availability to the updated availability
+                                        this.fetchAllClubs(); //retrieve all the updated clubs from the database
                                         this.toggleCheckOutMenu();
                                     } else {
                                         console.log("Club availabilities update failed, please try again.");
@@ -363,40 +377,44 @@
                         }
                     }
                 },
-                sortClubs: function () {
-                    if (this.sortBy == "title") {
+                sortClubs: function () { //sorting function that sorts the clubs based on the sortBy and orderBy values
+                    if (this.sortBy == "Title") {
                         this.clubs.sort((a, b) => a.subject.localeCompare(b.subject));
-                    } else if (this.sortBy == "price") {
+                        this.searchedClubs.sort((a, b) => a.subject.localeCompare(b.subject));
+                    } else if (this.sortBy == "Price") {
                         this.clubs.sort((a, b) => a.price - b.price);
-                    } else if (this.sortBy == "availability") {
+                        this.searchedClubs.sort((a, b) => a.price - b.price);
+                    } else if (this.sortBy == "Availability") {
                         this.clubs.sort((a, b) => a.availableSeats - b.availableSeats);
+                        this.searchedClubs.sort((a, b) => a.availableSeats - b.availableSeats);
                     }
-                    if (this.orderBy == "descending") {
+                    if (this.orderBy == "Descending") {
                         this.clubs.reverse();
+                        this.searchedClubs.reverse();
                     }
                 },
                 sortByTitle: function () {
-                    this.sortBy = "title";
+                    this.sortBy = "Title";
                     this.sortClubs();
                     console.log("sorted by title");
                 },
                 sortByPrice: function () {
-                    this.sortBy = "price";
+                    this.sortBy = "Price";
                     this.sortClubs();
                     console.log("sorted by price");
                 },
                 sortByAvailability: function () {
-                    this.sortBy = "availability";
+                    this.sortBy = "Availability";
                     this.sortClubs();
                     console.log("sorted by availability");
                 },
                 orderByAscending: function () {
-                    this.orderBy = "ascending";
+                    this.orderBy = "Ascending";
                     this.sortClubs();
                     console.log("ordered by ascending");
                 },
                 orderByDescending: function () {
-                    this.orderBy = "descending";
+                    this.orderBy = "Descending";
                     this.sortClubs();
                     console.log("ordered by descending");
                 }
@@ -451,7 +469,7 @@
                     return fullprice;
                 }
             },
-            created() {
+            created() { //in the created lifecycle hook of a vue application, we fetch all the clubs from the database so that theyre ready to be displaued when the user first loads the page
                 this.fetchAllClubs();
             }
         });
